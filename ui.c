@@ -64,14 +64,16 @@ static void draw_ui(Data *d, Item items[], int n, int selected, int rows, int co
                 a->expandida ? "v" : ">", a->nombre, h, t);
             if (i == selected) attron(A_BOLD | A_REVERSE);
             else attron(A_BOLD);
-            mvprintw(row, 0, "%-*s", cols, line);
+            if ((int)strlen(line) > cols - 12)
+                line[cols - 12] = 0;
+            mvprintw(row, 0, "%-*s", cols - 12, line);
             attroff(A_BOLD | A_REVERSE);
         } else {
             Tema *t = &d->asigs[it->asig_idx].temas[it->tema_idx];
             char prio_str[4];
             snprintf(prio_str, sizeof(prio_str), "[%c]", t->prio);
             char line[MAX_LEN + 32];
-            snprintf(line, sizeof(line), "    %s [%c] %s",
+            snprintf(line, sizeof(line), "    %s [%c]   %s",
                 prio_str, t->done ? 'x' : ' ', t->desc);
 
             if (i == selected) {
@@ -93,7 +95,7 @@ static void draw_ui(Data *d, Item items[], int n, int selected, int rows, int co
     }
 
     mvhline(rows - 2, 0, '-', cols);
-    mvprintw(rows - 1, 0, " a:asignatura  t:tema  e:editar  d:borrar  enter:completar  tab:expandir  q:salir");
+    mvprintw(rows - 1, 0, " a:asignatura  t:tema  e:editar  d:borrar  J/K:mover  enter:completar  tab:expandir  q:salir");
     refresh();
 }
 
@@ -252,6 +254,32 @@ void run_ui(Data *d) {
                 }
             }
             noecho(); curs_set(0);
+        }
+
+        else if (ch == 'K' && !items[selected].es_asig) {
+            int ai = items[selected].asig_idx;
+            int ti = items[selected].tema_idx;
+            if (ti > 0) {
+                Asignatura *a = &d->asigs[ai];
+                Tema tmp = a->temas[ti];
+                a->temas[ti] = a->temas[ti-1];
+                a->temas[ti-1] = tmp;
+                selected--;
+                data_save(d);
+            }
+        }
+
+        else if (ch == 'J' && !items[selected].es_asig) {
+            int ai = items[selected].asig_idx;
+            int ti = items[selected].tema_idx;
+            Asignatura *a = &d->asigs[ai];
+            if (ti < a->n_temas - 1) {
+                Tema tmp = a->temas[ti];
+                a->temas[ti] = a->temas[ti+1];
+                a->temas[ti+1] = tmp;
+                selected++;
+                data_save(d);
+            }
         }
 
     }

@@ -1,13 +1,16 @@
 [AS] Estadística
-  [M] [ ]  Tema 5 |21/05/2026
-  [A] [ ]  Tema 6 |21/05/2026
-  [A] [ ]  Tema 7 |21/05/2026
-  [A] [ ]  Tema 8 |21/05/2026
+  [M] [ ]      Repasar Tema 5 |21/05/2026
+  [A] [ ]      Tema 6 Primera vista |21/05/2026
+  [A] [ ]    Tema 6 formulario inicial |21/05/2026
+  [A] [ ]      Tema 7 |21/05/2026
+  [A] [ ]      Tema 8 |21/05/2026
+  [A] [ ]    Imprimir hojas distribuciones |21/05/2026
 [AS] Calor
-  [M] [ ]  Tema 4 |21/05/2026
-  [M] [ ]  Tema 5 |21/05/2026
+  [M] [ ]      Tema 4 |21/05/2026
+  [M] [ ]      Tema 5 |21/05/2026
+  [B] [ ]    Imprimir formulario |21/05/2026
 [AS] Electro
-  [A] [ ]  Tema 1 |21/05/2026
-  [A] [ ]  Tema 2 |21/05/2026
-  [A] [ ]  Tema 3 |21/05/2026
-  [A] [ ]  Tema 4 |21/05/2026
+  [A] [ ]      Tema 1 |21/05/2026
+  [A] [ ]      Tema 2 |21/05/2026
+  [A] [ ]      Tema 3 |21/05/2026
+  [A] [ ]      Tema 4 |21/05/2026
