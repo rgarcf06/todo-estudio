@@ -6,7 +6,7 @@
 #define MAX_ASIG   20
 #define MAX_TEMAS  50
 #define MAX_LEN   128
-#define FILE_NAME "estudio.txt"
+#define FILE_NAME "/home/roberto/Programming/todo-estudio/estudio.txt"
 
 typedef struct {
     char desc[MAX_LEN];
