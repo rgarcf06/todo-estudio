@@ -32,7 +32,9 @@ void data_load(Data *d) {
                 strncpy(t->fecha, sep + 1, 11);
                 *sep = 0;
             }
-            strncpy(t->desc, line + 9, MAX_LEN);
+            char *desc_start = line + 9;
+            while (*desc_start == ' ') desc_start++;
+            strncpy(t->desc, desc_start, MAX_LEN);
             // quitar espacio final
             int len = strlen(t->desc);
             while (len > 0 && t->desc[len-1] == ' ') t->desc[--len] = 0;
