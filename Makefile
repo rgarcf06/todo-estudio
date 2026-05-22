@@ -12,3 +12,7 @@ ui.o: ui.c ui.h data.h
 
 clean:
 	rm -f *.o estudio
+
+install: estudio
+	sudo cp estudio /usr/local/bin/estudio
+	sudo chmod +x /usr/local/bin/estudio

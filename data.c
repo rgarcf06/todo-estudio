@@ -26,7 +26,7 @@ void data_load(Data *d) {
             if (cur->n_temas >= MAX_TEMAS) continue;
             Tema *t = &cur->temas[cur->n_temas++];
             t->prio = line[3];
-            t->done = (line[6] == 'x') ? 1 : 0;
+            t->done = (line[7] == 'x') ? 1 : 0;
             char *sep = strrchr(line, '|');
             if (sep) {
                 strncpy(t->fecha, sep + 1, 11);
@@ -57,6 +57,7 @@ void data_save(const Data *d) {
                 t->done ? 'x' : ' ',
                 t->desc,
                 t->fecha);
+            printf("DEBUG: guardando tema %s, done=%d, char=%c\n", t->desc, t->done, t->done ? 'x' : ' ');
         }
     }
     fclose(f);
