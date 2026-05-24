@@ -28,6 +28,11 @@ Funcionalidades implementadas:
 - Fecha de creación visible a la derecha
 - Contador de temas completados en el título
 - Navegación con j/k y flechas
+- Pomodoro: ventana flotante en esquina inferior derecha, 25min trabajo / 5min descanso
+  - 'p' pausa/reanuda, 'r' resetea la fase actual
+  - flash() al cambiar de fase
+  - Color del widget: rojo=trabajo activo, verde=descanso activo, blanco=pausado
+  - Estado no persiste entre ejecuciones (siempre arranca en 25:00 pausado)
 - Acceso directo en escritorio Windows que lanza el programa
 - Icono pixel art naranja (icono.svg, icono.ico)
 
