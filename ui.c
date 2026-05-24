@@ -96,7 +96,7 @@ static void draw_ui(Data *d, Item items[], int n, int selected, int offset, int 
     }
 
     mvhline(rows - 2, 0, '-', cols);
-    mvprintw(rows - 1, 0, " a:asig t:tema e:edit d:borrar enter:done p:pomo P:asignar r:reset m:menu q:salir");
+    mvprintw(rows - 1, 0, " a:asig t:tema e:edit d:borrar enter:done p:pomo P:asignar C:hecho r:reset m:menu q:salir");
     wnoutrefresh(stdscr);
 }
 
@@ -413,6 +413,15 @@ void run_ui(Data *d) {
 
             noecho(); curs_set(0);
             timeout(200);
+        }
+        
+        else if (ch == 'C') {
+            pomo_log(d);
+            d->pomo.is_work = !d->pomo.is_work;
+            d->pomo.minutes = d->pomo.is_work ? d->pomo.work_time : d->pomo.break_time;
+            d->pomo.seconds = 0;
+            play_sound(d->pomo.is_work);
+            flash();
         }
 
 
