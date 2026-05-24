@@ -26,6 +26,8 @@ Features:
 - Sonido al cambiar fase pomo (powershell, C:\Users\LENOVO\sounds\work.wav / break.wav)
 - m: menú pomo para cambiar work_time/break_time (default 25/5)
 - r: resetea al tiempo configurado (no hardcoded 25/5)
+- C: completar fase pomodoro actual (salta al siguiente)
+- Compilar e instalar: sudo make install (compila + copia a /usr/local/bin)
 
 Repo: https://github.com/rgarcf06/todo-estudio
 
