@@ -9,6 +9,8 @@ void data_load(Data *d) {
     d->pomo.seconds = 0;
     d->pomo.is_work = 1;
     d->pomo.running = 0;
+    d->pomo.work_time = 25;
+    d->pomo.break_time = 5;
 
     FILE *f = fopen(FILE_NAME, "r");
     if (!f) return;

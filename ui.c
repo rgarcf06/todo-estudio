@@ -96,7 +96,7 @@ static void draw_ui(Data *d, Item items[], int n, int selected, int offset, int 
     }
 
     mvhline(rows - 2, 0, '-', cols);
-    mvprintw(rows - 1, 0, " a:asig t:tema e:edit d:borrar enter:done p:pomo P:asignar r:reset q:salir");
+    mvprintw(rows - 1, 0, " a:asig t:tema e:edit d:borrar enter:done p:pomo P:asignar r:reset m:menu q:salir");
     wnoutrefresh(stdscr);
 }
 
@@ -166,8 +166,7 @@ static void update_pomo(Data *d) {
             // Cambio de fase
             pomo_log(d);
             d->pomo.is_work = !d->pomo.is_work;
-            d->pomo.minutes = d->pomo.is_work ? 25 : 5;
-            d->pomo.seconds = 0;
+            d->pomo.minutes = d->pomo.is_work ? d->pomo.work_time : d->pomo.break_time;d->pomo.seconds = 0;
             play_sound(d->pomo.is_work);
             flash();
         }
@@ -213,7 +212,7 @@ void run_ui(Data *d) {
             d->pomo.running = !d->pomo.running;
         }
         else if (ch == 'r') {
-            d->pomo.minutes = d->pomo.is_work ? 25 : 5;
+            d->pomo.minutes = d->pomo.is_work ? d->pomo.work_time : d->pomo.break_time;
             d->pomo.seconds = 0;
             d->pomo.running = 0;
         }
@@ -397,8 +396,25 @@ void run_ui(Data *d) {
             strncpy(d->pomo.tarea, t->desc, MAX_LEN);
         }
 
-        else if (ch == 's') play_sound(1);  // test
-else if (ch == 'S') play_sound(0);  // test
+        else if (ch == 'm') {
+            timeout(-1);
+            char buf[8];
+            mvprintw(rows-3, 2, "Tiempo trabajo (min): ");
+            clrtoeol(); echo(); curs_set(1);
+            getnstr(buf, 3);
+            int t = atoi(buf);
+            if (t > 0) d->pomo.work_time = t;
+
+            mvprintw(rows-3, 2, "Tiempo descanso (min): ");
+            clrtoeol();
+            getnstr(buf, 3);
+            t = atoi(buf);
+            if (t > 0) d->pomo.break_time = t;
+
+            noecho(); curs_set(0);
+            timeout(200);
+        }
+
 
     }
 

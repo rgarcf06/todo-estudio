@@ -24,6 +24,8 @@ Features:
 - P: asignar tema a pomodoro
 - Historial pomo en ~/.estudio/pomo.log (append al cambiar fase)
 - Sonido al cambiar fase pomo (powershell, C:\Users\LENOVO\sounds\work.wav / break.wav)
+- m: menú pomo para cambiar work_time/break_time (default 25/5)
+- r: resetea al tiempo configurado (no hardcoded 25/5)
 
 Repo: https://github.com/rgarcf06/todo-estudio
 

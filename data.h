@@ -24,11 +24,10 @@ typedef struct {
 } Asignatura;
 
 typedef struct {
-    int minutes;
-    int seconds;
-    int is_work;    // 1=work, 0=break
-    int running;
+    int minutes, seconds, is_work, running;
     char tarea[MAX_LEN];
+    int work_time;   // default 25
+    int break_time;  // default 5
 } Pomodoro;
 
 typedef struct {
