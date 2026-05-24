@@ -5,6 +5,11 @@
 
 void data_load(Data *d) {
     d->n_asigs = 0;
+    d->pomo.minutes = 25;
+    d->pomo.seconds = 0;
+    d->pomo.is_work = 1;
+    d->pomo.running = 0;
+
     FILE *f = fopen(FILE_NAME, "r");
     if (!f) return;
 
@@ -57,7 +62,6 @@ void data_save(const Data *d) {
                 t->done ? 'x' : ' ',
                 t->desc,
                 t->fecha);
-            printf("DEBUG: guardando tema %s, done=%d, char=%c\n", t->desc, t->done, t->done ? 'x' : ' ');
         }
     }
     fclose(f);

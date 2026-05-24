@@ -31,7 +31,7 @@ static void get_fecha(char *buf) {
 }
 
 static void draw_ui(Data *d, Item items[], int n, int selected, int rows, int cols) {
-    clear();
+    erase();
 
     // Contar totales
     int total = 0, hechos = 0;
@@ -95,8 +95,55 @@ static void draw_ui(Data *d, Item items[], int n, int selected, int rows, int co
     }
 
     mvhline(rows - 2, 0, '-', cols);
-    mvprintw(rows - 1, 0, " a:asignatura  t:tema  e:editar  d:borrar  J/K:mover  enter:completar  tab:expandir  q:salir");
-    refresh();
+    mvprintw(rows - 1, 0, " a:asig t:tema e:edit d:borrar enter:done p:pomo r:reset q:salir");
+    wnoutrefresh(stdscr);
+}
+
+static void draw_pomo(Data *d, int rows, int cols) {
+    int w = 15, h = 3;
+    int x = cols - w - 1;
+    int y = rows - 4; // Above the help line (rows-1) and separator (rows-2)
+
+    WINDOW *win = newwin(h, w, y, x);
+    wbkgd(win, COLOR_PAIR(d->pomo.running ? (d->pomo.is_work ? 4 : 2) : 3));
+    box(win, 0, 0);
+
+    char *mode = d->pomo.is_work ? "TRABAJO" : "DESCANSO";
+    mvwprintw(win, 0, (w - strlen(mode)) / 2, "%s", mode);
+    mvwprintw(win, 1, (w - 5) / 2, "%02d:%02d", d->pomo.minutes, d->pomo.seconds);
+    
+    if (!d->pomo.running) {
+        mvwprintw(win, 2, (w - 6) / 2, "PAUSA");
+    }
+
+    wnoutrefresh(win);
+    delwin(win);
+}
+
+static void update_pomo(Data *d) {
+    static time_t last_tick = 0;
+    time_t now = time(NULL);
+
+    if (!d->pomo.running) {
+        last_tick = now;
+        return;
+    }
+
+    if (now > last_tick) {
+        last_tick = now;
+        if (d->pomo.seconds > 0) {
+            d->pomo.seconds--;
+        } else if (d->pomo.minutes > 0) {
+            d->pomo.minutes--;
+            d->pomo.seconds = 59;
+        } else {
+            // Cambio de fase
+            d->pomo.is_work = !d->pomo.is_work;
+            d->pomo.minutes = d->pomo.is_work ? 25 : 5;
+            d->pomo.seconds = 0;
+            flash();
+        }
+    }
 }
 
 void run_ui(Data *d) {
@@ -106,6 +153,7 @@ void run_ui(Data *d) {
     keypad(stdscr, TRUE);
     curs_set(0);
     start_color();
+    timeout(200); // 200ms timeout for getch()
 
     init_pair(1, COLOR_WHITE, COLOR_BLUE);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
@@ -119,15 +167,27 @@ void run_ui(Data *d) {
     int rows, cols;
 
     while (1) {
+        update_pomo(d);
         n = build_items(d, items);
         if (selected >= n) selected = n - 1;
         if (selected < 0) selected = 0;
         getmaxyx(stdscr, rows, cols);
         draw_ui(d, items, n, selected, rows, cols);
+        draw_pomo(d, rows, cols);
+        doupdate();
 
         ch = getch();
 
         if (ch == 'q') break;
+        
+        else if (ch == 'p') {
+            d->pomo.running = !d->pomo.running;
+        }
+        else if (ch == 'r') {
+            d->pomo.minutes = d->pomo.is_work ? 25 : 5;
+            d->pomo.seconds = 0;
+            d->pomo.running = 0;
+        }
 
         else if ((ch == 'k' || ch == KEY_UP) && selected > 0) selected--;
         else if ((ch == 'j' || ch == KEY_DOWN) && selected < n - 1) selected++;
