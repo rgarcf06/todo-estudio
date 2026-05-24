@@ -23,6 +23,7 @@ Features:
 - Acceso directo Windows
 - P: asignar tema a pomodoro
 - Historial pomo en ~/.estudio/pomo.log (append al cambiar fase)
+- Sonido al cambiar fase pomo (powershell, C:\Users\LENOVO\sounds\work.wav / break.wav)
 
 Repo: https://github.com/rgarcf06/todo-estudio
 
