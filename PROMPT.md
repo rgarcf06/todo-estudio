@@ -22,6 +22,7 @@ Features:
 - Icono pixel art naranja (icono.svg, icono.ico)
 - Acceso directo Windows
 - P: asignar tema a pomodoro
+- Historial pomo en ~/.estudio/pomo.log (append al cambiar fase)
 
 Repo: https://github.com/rgarcf06/todo-estudio
 
