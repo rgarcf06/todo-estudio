@@ -1,42 +1,27 @@
-Estoy desarrollando un gestor de estudio en C llamado "estudio" en WSL Ubuntu.
-Ruta del proyecto: ~/Programming/todo-estudio
-
-Estructura:
-- main.c, data.c, data.h, ui.c, ui.h, Makefile
-- Binario instalado en /usr/local/bin/estudio
-- Datos en: /home/roberto/Programming/todo-estudio/estudio.txt
+Proyecto: gestor estudio C, WSL Ubuntu. Ruta: ~/Programming/todo-estudio
 
 Stack: C + ncurses + gcc + make + git
+Archivos: main.c data.c data.h ui.c ui.h Makefile
+Binario: /usr/local/bin/estudio
+Datos: ~/Programming/todo-estudio/estudio.txt
 
-Formato de estudio.txt:
-[AS] nombre_asignatura
-  [PRIO] [ESTADO] descripción |dd/mm/yyyy
-Donde PRIO = A/M/B, ESTADO = ' ' o 'x'
-Posiciones: prio=line[3], estado=line[7]
-La descripción se lee saltando espacios tras line[9] con while(*p==' ')p++
+Formato estudio.txt:
+[AS] nombre
+  [PRIO] [ESTADO] desc |dd/mm/yyyy
+prio=line[3] estado=line[7] desc=line[9] (skip spaces)
 
-Funcionalidades implementadas:
-- TUI con ncurses
-- Asignaturas colapsables con tab, indicador v/>
-- Añadir asignatura con 'a', tema con 't'
-- Completar/descompletar tema con Enter
-- Editar nombre y prioridad con 'e' (edición inline con cursor)
-- Borrar con 'd' + confirmación s/n
-- Mover temas con J/K (mayúscula) dentro de la misma asignatura
-- Nombres largos se truncan para no romper el layout
-- Prioridades con colores: rojo=alta, amarillo=media, cyan=baja, verde=completada, azul=seleccionada
-- Fecha de creación visible a la derecha
-- Contador de temas completados en el título
-- Navegación con j/k y flechas
-- Pomodoro: ventana flotante en esquina inferior derecha, 25min trabajo / 5min descanso
-  - 'p' pausa/reanuda, 'r' resetea la fase actual
-  - flash() al cambiar de fase
-  - Color del widget: rojo=trabajo activo, verde=descanso activo, blanco=pausado
-  - Estado no persiste entre ejecuciones (siempre arranca en 25:00 pausado)
-- Acceso directo en escritorio Windows que lanza el programa
+Features:
+- TUI ncurses
+- Asigs colapsables (tab, v/>)
+- a:nueva asig, t:nuevo tema, e:editar, d:borrar(s/n), enter:done
+- J/K mover temas, j/k navegar
+- Colores: rojo=alta, amarillo=media, cyan=baja, verde=done, azul=selected
+- Fecha creación a la derecha, contador done/total en título
+- Pomodoro flotante (esquina inf-der): 25/5min, p:pausa, r:reset, flash al cambiar fase
+- No persiste estado pomo. Arranca 25:00 pausado
 - Icono pixel art naranja (icono.svg, icono.ico)
+- Acceso directo Windows
 
-Repo GitHub: https://github.com/rgarcf06/todo-estudio
+Repo: https://github.com/rgarcf06/todo-estudio
 
-Continúa ayudándome a desarrollar el proyecto. Responde de forma breve y precisa,
-sin saludos ni resúmenes. Usa código cuando sea más claro que texto.
+Modo: caveman. Sin saludos ni resúmenes. Código > texto.
