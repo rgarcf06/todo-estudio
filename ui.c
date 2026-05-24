@@ -208,6 +208,7 @@ void run_ui(Data *d) {
         }
 
         else if (ch == 'a') {
+            timeout(-1);
             echo(); curs_set(1);
             char buf[MAX_LEN];
             mvprintw(rows - 3, 2, "Nueva asignatura: ");
@@ -221,6 +222,7 @@ void run_ui(Data *d) {
                 a->expandida = 1;
                 data_save(d);
             }
+            timeout(200);
         }
 
         else if (ch == 'e' && n > 0) {
@@ -232,6 +234,7 @@ void run_ui(Data *d) {
                 strncpy(buf, d->asigs[it->asig_idx].temas[it->tema_idx].desc, MAX_LEN);
             }
             int len = strlen(buf), pos = len;
+            timeout(-1);
             while (1) {
                 mvprintw(rows - 3, 2, "Editar: %-50s", buf);
                 move(rows - 3, 10 + pos);
@@ -266,6 +269,7 @@ void run_ui(Data *d) {
                 }
                 data_save(d);
             }
+            timeout(200);
         }
 
         else if (ch == 'd' && n > 0) {
@@ -294,6 +298,7 @@ void run_ui(Data *d) {
         }
 
         else if (ch == 't' && n > 0) {
+            timeout(-1);
             echo(); curs_set(1);
             char buf[MAX_LEN];
             mvprintw(rows - 3, 2, "Nuevo tema: ");
@@ -317,6 +322,7 @@ void run_ui(Data *d) {
                 }
             }
             noecho(); curs_set(0);
+            timeout(200);
         }
 
         else if (ch == 'K' && !items[selected].es_asig) {
