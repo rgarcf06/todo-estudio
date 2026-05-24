@@ -138,6 +138,14 @@ static void pomo_log(Data *d) {
     fclose(f);
 }
 
+static void play_sound(int is_work_starting) {
+    char cmd[512];
+    snprintf(cmd, sizeof(cmd),
+        "powershell.exe -c \"(New-Object Media.SoundPlayer 'C:\\\\Users\\\\LENOVO\\\\sounds\\\\%s').PlaySync()\" &",
+        is_work_starting ? "work.wav" : "break.wav");
+    system(cmd);
+}
+
 static void update_pomo(Data *d) {
     static time_t last_tick = 0;
     time_t now = time(NULL);
@@ -160,10 +168,12 @@ static void update_pomo(Data *d) {
             d->pomo.is_work = !d->pomo.is_work;
             d->pomo.minutes = d->pomo.is_work ? 25 : 5;
             d->pomo.seconds = 0;
+            play_sound(d->pomo.is_work);
             flash();
         }
     }
 }
+
 
 void run_ui(Data *d) {
     initscr();
@@ -379,6 +389,9 @@ void run_ui(Data *d) {
             Tema *t = &d->asigs[items[selected].asig_idx].temas[items[selected].tema_idx];
             strncpy(d->pomo.tarea, t->desc, MAX_LEN);
         }
+
+        else if (ch == 's') play_sound(1);  // test
+else if (ch == 'S') play_sound(0);  // test
 
     }
 
