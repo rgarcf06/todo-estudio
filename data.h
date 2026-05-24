@@ -7,6 +7,7 @@
 #define MAX_TEMAS  50
 #define MAX_LEN   128
 #define FILE_NAME "/home/roberto/Programming/todo-estudio/estudio.txt"
+#define POMO_LOG "/home/roberto/Programming/todo-estudio/pomo.log"
 
 typedef struct {
     char desc[MAX_LEN];

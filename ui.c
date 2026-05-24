@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "ui.h"
 
 // Elemento navegable (asignatura o tema)
@@ -123,6 +124,20 @@ static void draw_pomo(Data *d, int rows, int cols) {
     delwin(win);
 }
 
+static void pomo_log(Data *d) {
+    FILE *f = fopen(POMO_LOG, "a");
+    if (!f) return;
+    char fecha[20];
+    time_t t = time(NULL);
+    strftime(fecha, sizeof(fecha), "%Y/%m/%d %H:%M", localtime(&t));
+    fprintf(f, "%s | %s | %02d:%02d | %s\n",
+        fecha,
+        d->pomo.is_work ? "TRABAJO" : "DESCANSO",
+        d->pomo.is_work ? 25 : 5, 0,
+        d->pomo.tarea[0] ? d->pomo.tarea : "-");
+    fclose(f);
+}
+
 static void update_pomo(Data *d) {
     static time_t last_tick = 0;
     time_t now = time(NULL);
@@ -141,6 +156,7 @@ static void update_pomo(Data *d) {
             d->pomo.seconds = 59;
         } else {
             // Cambio de fase
+            pomo_log(d);
             d->pomo.is_work = !d->pomo.is_work;
             d->pomo.minutes = d->pomo.is_work ? 25 : 5;
             d->pomo.seconds = 0;
