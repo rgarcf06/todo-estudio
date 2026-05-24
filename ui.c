@@ -31,7 +31,7 @@ static void get_fecha(char *buf) {
     strftime(buf, 11, "%d/%m/%Y", tm);
 }
 
-static void draw_ui(Data *d, Item items[], int n, int selected, int rows, int cols) {
+static void draw_ui(Data *d, Item items[], int n, int selected, int offset, int rows, int cols) {
     erase();
 
     // Contar totales
@@ -51,9 +51,9 @@ static void draw_ui(Data *d, Item items[], int n, int selected, int rows, int co
     mvhline(1, 0, '-', cols);
 
     // Items
-    for (int i = 0; i < n; i++) {
+    for (int i = offset; i < n; i++) {
         Item *it = &items[i];
-        int row = i + 2;
+        int row = (i - offset) + 2;
         if (row >= rows - 2) break;
 
         if (it->es_asig) {
@@ -192,7 +192,7 @@ void run_ui(Data *d) {
     init_pair(6, COLOR_CYAN,  COLOR_BLACK);
 
     Item items[MAX_ITEMS];
-    int n, selected = 0, ch;
+    int n, selected = 0, offset = 0, ch;
     int rows, cols;
 
     while (1) {
@@ -201,7 +201,7 @@ void run_ui(Data *d) {
         if (selected >= n) selected = n - 1;
         if (selected < 0) selected = 0;
         getmaxyx(stdscr, rows, cols);
-        draw_ui(d, items, n, selected, rows, cols);
+        draw_ui(d, items, n, selected, offset, rows, cols);
         draw_pomo(d, rows, cols);
         doupdate();
 
@@ -218,8 +218,15 @@ void run_ui(Data *d) {
             d->pomo.running = 0;
         }
 
-        else if ((ch == 'k' || ch == KEY_UP) && selected > 0) selected--;
-        else if ((ch == 'j' || ch == KEY_DOWN) && selected < n - 1) selected++;
+        else if ((ch == 'k' || ch == KEY_UP) && selected > 0) {
+            selected--;
+            if (selected < offset) offset = selected;
+        }
+        else if ((ch == 'j' || ch == KEY_DOWN) && selected < n - 1) {
+            selected++;
+            int visible = rows - 4;
+            if (selected >= offset + visible) offset = selected - visible + 1;
+        }
 
         else if (ch == '\t') {
             Item *it = &items[selected];
