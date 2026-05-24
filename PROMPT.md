@@ -21,6 +21,7 @@ Features:
 - No persiste estado pomo. Arranca 25:00 pausado
 - Icono pixel art naranja (icono.svg, icono.ico)
 - Acceso directo Windows
+- P: asignar tema a pomodoro
 
 Repo: https://github.com/rgarcf06/todo-estudio
 
