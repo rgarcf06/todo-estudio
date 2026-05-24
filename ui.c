@@ -95,12 +95,12 @@ static void draw_ui(Data *d, Item items[], int n, int selected, int rows, int co
     }
 
     mvhline(rows - 2, 0, '-', cols);
-    mvprintw(rows - 1, 0, " a:asig t:tema e:edit d:borrar enter:done p:pomo r:reset q:salir");
+    mvprintw(rows - 1, 0, " a:asig t:tema e:edit d:borrar enter:done p:pomo P:asignar r:reset q:salir");
     wnoutrefresh(stdscr);
 }
 
 static void draw_pomo(Data *d, int rows, int cols) {
-    int w = 15, h = 3;
+    int w = 20, h = 4;
     int x = cols - w - 1;
     int y = rows - 4; // Above the help line (rows-1) and separator (rows-2)
 
@@ -115,6 +115,9 @@ static void draw_pomo(Data *d, int rows, int cols) {
     if (!d->pomo.running) {
         mvwprintw(win, 2, (w - 6) / 2, "PAUSA");
     }
+
+    if (d->pomo.tarea[0])
+        mvwprintw(win, 2, 1, "%-*.*s", w-2, w-2, d->pomo.tarea);
 
     wnoutrefresh(win);
     delwin(win);
@@ -340,6 +343,19 @@ void run_ui(Data *d) {
                 selected++;
                 data_save(d);
             }
+        }
+
+        else if (ch == 'T') {
+            echo(); curs_set(1);
+            mvprintw(rows-3, 2, "Tarea pomo: ");
+            clrtoeol();
+            getnstr(d->pomo.tarea, MAX_LEN-1);
+            noecho(); curs_set(0);
+        }
+
+        else if (ch == 'P' && !items[selected].es_asig) {
+            Tema *t = &d->asigs[items[selected].asig_idx].temas[items[selected].tema_idx];
+            strncpy(d->pomo.tarea, t->desc, MAX_LEN);
         }
 
     }

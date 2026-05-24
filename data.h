@@ -27,6 +27,7 @@ typedef struct {
     int seconds;
     int is_work;    // 1=work, 0=break
     int running;
+    char tarea[MAX_LEN];
 } Pomodoro;
 
 typedef struct {
@@ -34,6 +35,8 @@ typedef struct {
     int n_asigs;
     Pomodoro pomo;
 } Data;
+
+    
 
 void data_load(Data *d);
 void data_save(const Data *d);
