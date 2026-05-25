@@ -25,6 +25,7 @@ void data_load(Data *d) {
             // Asignatura: [AS] nombre
             if (d->n_asigs >= MAX_ASIG) continue;
             cur = &d->asigs[d->n_asigs++];
+            memset(cur, 0, sizeof(Asignatura));
             strncpy(cur->nombre, line + 5, MAX_LEN);
             cur->n_temas = 0;
             cur->expandida = 1;
@@ -32,6 +33,7 @@ void data_load(Data *d) {
             // Tema:   [A] [x] desc |fecha
             if (cur->n_temas >= MAX_TEMAS) continue;
             Tema *t = &cur->temas[cur->n_temas++];
+            memset(t, 0, sizeof(Tema));
             t->prio = line[3];
             t->done = (line[7] == 'x') ? 1 : 0;
             char *sep = strrchr(line, '|');

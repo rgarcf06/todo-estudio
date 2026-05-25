@@ -34,6 +34,7 @@ static void get_fecha(char *buf) {
 static void draw_ui(Data *d, Item items[], int n, int selected, int offset, int rows, int cols) {
     erase();
 
+
     // Contar totales
     int total = 0, hechos = 0;
     for (int i = 0; i < d->n_asigs; i++)
@@ -249,6 +250,7 @@ void run_ui(Data *d) {
             noecho(); curs_set(0);
             if (strlen(buf) > 0 && d->n_asigs < MAX_ASIG) {
                 Asignatura *a = &d->asigs[d->n_asigs++];
+                memset(a, 0, sizeof(Asignatura));
                 strncpy(a->nombre, buf, MAX_LEN);
                 a->n_temas = 0;
                 a->expandida = 1;
@@ -309,7 +311,9 @@ void run_ui(Data *d) {
             mvprintw(rows - 3, 2, "¿Borrar? (s/n): ");
             clrtoeol();
             curs_set(1);
+            timeout(-1);
             int c = getch();
+            timeout(200);
             curs_set(0);
             if (c == 's') {
                 if (it->es_asig) {
@@ -325,6 +329,7 @@ void run_ui(Data *d) {
                     a->n_temas--;
                 }
                 data_save(d);
+                data_load(d);
                 if (selected >= n - 1 && selected > 0) selected--;
             }
         }
@@ -346,6 +351,7 @@ void run_ui(Data *d) {
                 Asignatura *a = &d->asigs[ai];
                 if (a->n_temas < MAX_TEMAS) {
                     Tema *t = &a->temas[a->n_temas++];
+                    memset(t, 0, sizeof(Tema));
                     strncpy(t->desc, buf, MAX_LEN);
                     t->prio = prio;
                     t->done = 0;

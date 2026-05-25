@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "data.h"
 #include "ui.h"
 
